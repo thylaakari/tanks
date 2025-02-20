@@ -22,17 +22,29 @@ document.body.addEventListener('keydown', (e) => {
 })
 
 function goUp() {
-  console.log('up')
+  let n = removePx(getComputedStyle(player).top)
+  n -= 10
+  player.style.top = n + 'px'
 }
 function goDown() {
-  console.log('down')
+  let n = removePx(getComputedStyle(player).top)
+  n += 10
+  player.style.top = n + 'px'
 }
 function goLeft() {
-  console.log('left')
+  let n = removePx(getComputedStyle(player).left)
+  n -= 10
+  player.style.left = n + 'px'
 }
 function goRight() {
-  console.log('right')
+  let n = removePx(getComputedStyle(player).left)
+  n += 10
+  player.style.left = n + 'px'
 }
 function shoot() {
   console.log('shoot')
+}
+
+function removePx(n) {
+  return +n.slice(0, -2)
 }
