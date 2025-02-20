@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+#app {
+  margin: 200px auto;
+  width: 500px;
+  height: 500px;
+  border: 1px solid black;
+  position: relative;
+}
+
+#player {
+  width: 50px;
+  height: 50px;
+  background-color: green;
+  position: absolute;
+  box-shadow: inset 0 2px 0 red;
+  top: 20px;
+  left: 30px;
+}
