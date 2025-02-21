@@ -54,7 +54,15 @@ function goRight() {
   }
 }
 function shoot() {
-  console.log('shoot')
+  const bullet = document.createElement('div')
+  bullet.classList.add('bullet')
+  bullet.style.top = removePx(getComputedStyle(player).top) + 'px'
+  bullet.style.left = removePx(getComputedStyle(player).left) + 'px'
+  app.appendChild(bullet)
+  setTimeout(() => {
+    app.removeChild(bullet)
+  }, 2000)
+  console.log('dir:', side())
 }
 
 function removePx(n) {
@@ -74,4 +82,19 @@ function move(n, plus = true) {
 
 function blockUp() {
   console.log('block up')
+}
+
+function side() {
+  switch (getComputedStyle(player).transform) {
+    case 'matrix(1, 0, 0, 1, 0, 0)':
+      return 'up'
+    case 'matrix(0, 1, -1, 0, 0, 0)':
+      return 'right'
+    case 'matrix(-1, 0, 0, -1, 0, 0)':
+      return 'down'
+    case 'matrix(0, -1, 1, 0, 0, 0)':
+      return 'left'
+    default:
+      return 'up'
+  }
 }
