@@ -11,12 +11,10 @@
 }
 
 #player {
-  width: 50px;
-  height: 50px;
+  width: 44px;
+  height: 44px;
   background-color: green;
   position: absolute;
-  top: 250px;
-  left: 250px;
   background: url(./sprites/player.jpg) center center no-repeat;
   background-size: cover;
 }
@@ -33,4 +31,8 @@
   background-color: red;
   position: absolute;
   background-size: cover;
+}
+.wall {
+  position: absolute;
+  background-color: #333; /* Цвет стен */
 }
