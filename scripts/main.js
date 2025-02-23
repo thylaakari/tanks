@@ -56,13 +56,51 @@ function goRight() {
 function shoot() {
   const bullet = document.createElement('div')
   bullet.classList.add('bullet')
-  bullet.style.top = removePx(getComputedStyle(player).top) + 'px'
-  bullet.style.left = removePx(getComputedStyle(player).left) + 'px'
+  switch (side()) {
+    case 'up':
+      bullet.style.top = removePx(getComputedStyle(player).top) + 'px'
+      bullet.style.left = removePx(getComputedStyle(player).left) + 22 + 'px'
+      break
+    case 'right':
+      bullet.style.top = removePx(getComputedStyle(player).top) + 22 + 'px'
+      bullet.style.left = removePx(getComputedStyle(player).left) + 44 + 'px'
+      break
+    case 'down':
+      bullet.style.top = removePx(getComputedStyle(player).top) + 44 + 'px'
+      bullet.style.left = removePx(getComputedStyle(player).left) + 22 + 'px'
+      break
+    case 'left':
+      bullet.style.top = removePx(getComputedStyle(player).top) + 22 + 'px'
+      bullet.style.left = removePx(getComputedStyle(player).left) + 'px'
+      break
+    default:
+      bullet.style.top = `-10px`
+      break
+  }
   app.appendChild(bullet)
+  switch (side()) {
+    case 'up':
+      bullet.style.top = '0px'
+      bullet.style.transition = 'all 2s ease-in-out'
+      break
+    case 'right':
+      bullet.style.left = '450px'
+      bullet.style.transition = 'all 2s ease-in-out'
+      break
+    case 'down':
+      bullet.style.top = '450px'
+      bullet.style.transition = 'all 2s ease-in-out'
+      break
+    case 'left':
+      bullet.style.left = '0px'
+      bullet.style.transition = 'all 2s ease-in-out'
+      break
+    default:
+      break
+  }
   setTimeout(() => {
     app.removeChild(bullet)
   }, 2000)
-  console.log('dir:', side())
 }
 
 function removePx(n) {
