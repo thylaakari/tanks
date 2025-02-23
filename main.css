@@ -21,12 +21,11 @@
   background-size: cover;
 }
 .bullet {
-  width: 5px;
-  height: 5px;
-  background-color: black;
+  width: 6px;
+  height: 6px;
+  background: black;
   position: absolute;
-  top: 20px;
-  left: 30px;
+  border-radius: 50%;
 }
 .enemy {
   width: 50px;
