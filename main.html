@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tank Game</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      #app {
+        position: relative;
+        width: 500px;
+        height: 500px;
+        background-color: #f0f0f0;
+        border: 2px solid #000;
+      }
+      #player {
+        position: absolute;
+        width: 44px;
+        height: 44px;
+        background-color: blue;
+        transition: top 0.1s, left 0.1s;
+      }
+      .wall {
+        position: absolute;
+        background-color: #333;
+      }
+      .bullet {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: red;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="player"></div>
+      <!-- Пример стен -->
+      <div
+        class="wall"
+        style="top: 100px; left: 100px; width: 200px; height: 20px"
+      ></div>
+      <div
+        class="wall"
+        style="top: 300px; left: 50px; width: 20px; height: 150px"
+      ></div>
+    </div>
+
+    <script>
+      const app = document.getElementById('app')
+      const player = document.getElementById('player')
+      const walls = document.querySelectorAll('.wall')
+
+      // Начальная позиция игрока
+      player.style.top = '0px'
+      player.style.left = '0px'
+
+      // Обработчик нажатия клавиш
+      document.body.addEventListener('keydown', handleKeydown)
+
+      function handleKeydown(event) {
+        const actions = {
+          ArrowUp: () => movePlayer(0, -10),
+          ArrowDown: () => movePlayer(0, 10),
+          ArrowLeft: () => movePlayer(-10, 0),
+          ArrowRight: () => movePlayer(10, 0),
+          Space: shoot,
+        }
+
+        if (actions.hasOwnProperty(event.code)) {
+          actions[event.code]()
+        }
+      }
+
+      // Движение игрока
+      function movePlayer(deltaX, deltaY) {
+        const currentTop = parseInt(player.style.top, 10)
+        const currentLeft = parseInt(player.style.left, 10)
+        const newTop = currentTop + deltaY
+        const newLeft = currentLeft + deltaX
+
+        // Проверка границ поля
+        if (newTop >= 0 && newTop <= 456 && newLeft >= 0 && newLeft <= 456) {
+          // Проверка коллизий со стенами
+          if (!checkCollision(newTop, newLeft, 44, 44)) {
+            player.style.top = newTop + 'px'
+            player.style.left = newLeft + 'px'
+          }
+        }
+      }
+
+      // Проверка коллизий
+      function checkCollision(top, left, width, height) {
+        const playerRect = {
+          top: top,
+          left: left,
+          right: left + width,
+          bottom: top + height,
+        }
+
+        for (const wall of walls) {
+          const wallRect = wall.getBoundingClientRect()
+          const appRect = app.getBoundingClientRect()
+
+          const wallTop = wallRect.top - appRect.top
+          const wallLeft = wallRect.left - appRect.left
+          const wallRight = wallLeft + wallRect.width
+          const wallBottom = wallTop + wallRect.height
+
+          if (
+            playerRect.right > wallLeft &&
+            playerRect.left < wallRight &&
+            playerRect.bottom > wallTop &&
+            playerRect.top < wallBottom
+          ) {
+            return true // Коллизия обнаружена
+          }
+        }
+
+        return false // Коллизий нет
+      }
+
+      // Выстрел
+      function shoot() {
+        const bullet = document.createElement('div')
+        bullet.classList.add('bullet')
+        const playerTop = parseInt(player.style.top, 10)
+        const playerLeft = parseInt(player.style.left, 10)
+
+        // Начальная позиция пули
+        bullet.style.top = playerTop + 17 + 'px' // Центрирование по вертикали
+        bullet.style.left = playerLeft + 17 + 'px' // Центрирование по горизонтали
+        app.appendChild(bullet)
+
+        // Движение пули
+        const bulletSpeed = 5
+        const interval = setInterval(() => {
+          const currentTop = parseInt(bullet.style.top, 10)
+          const newTop = currentTop - bulletSpeed
+
+          // Проверка границ поля
+          if (newTop < 0) {
+            clearInterval(interval)
+            app.removeChild(bullet)
+            return
+          }
+
+          // Проверка коллизий пули со стенами
+          if (checkCollision(newTop, parseInt(bullet.style.left, 10), 10, 10)) {
+            clearInterval(interval)
+            app.removeChild(bullet)
+            return
+          }
+
+          bullet.style.top = newTop + 'px'
+        }, 20)
+      }
+    </script>
+  </body>
+</html>
